@@ -8,9 +8,8 @@ import (
 const minLen = 3
 
 type Index struct {
-	maxDbId int
-	db      map[int]string
-	index   map[string]map[int]bool
+	db    map[int]string
+	index map[string]map[int]bool
 }
 
 func word2token(word string) map[string]bool {
@@ -27,16 +26,14 @@ func word2token(word string) map[string]bool {
 
 func New() Index {
 	var idx Index
-	idx.maxDbId = 0
 	idx.db = make(map[int]string)
 	idx.index = make(map[string]map[int]bool)
 	return idx
 }
 
 func (idx Index) Add(id string, searchText string) {
-
-	idx.maxDbId++
-	idx.db[idx.maxDbId] = id
+	maxDbId := len(idx.db)
+	idx.db[maxDbId] = id
 
 	searchText = strings.TrimSpace(searchText)
 	space := regexp.MustCompile(`\s+`)
@@ -48,7 +45,7 @@ func (idx Index) Add(id string, searchText string) {
 			if idx.index[t] == nil {
 				idx.index[t] = make(map[int]bool)
 			}
-			idx.index[t][idx.maxDbId] = true
+			idx.index[t][maxDbId] = true
 		}
 	}
 }
