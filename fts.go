@@ -13,12 +13,6 @@ type Index struct {
 	index   map[string]map[int]bool
 }
 
-type DB struct {
-	intId  int
-	Id     string `json:"id"`
-	Search string `json:"search"`
-}
-
 func word2token(word string) map[string]bool {
 	word = strings.ToLower(word)
 	tokens := make(map[string]bool)
