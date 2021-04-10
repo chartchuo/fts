@@ -5,17 +5,20 @@ import (
 	"strings"
 )
 
-const minLen = 3
-
 type Index struct {
-	db    map[int]string
-	index map[string]map[int]bool
+	minLen int
+	maxLen int
+	db     map[int]string
+	index  map[string]map[int]bool
 }
 
-func word2token(word string) map[string]bool {
+func word2token(word string, minLen, maxLen int) map[string]bool {
 	word = strings.ToLower(word)
 	tokens := make(map[string]bool)
-	for i := minLen; i <= len(word); i++ {
+	if len(word) < minLen {
+		return tokens
+	}
+	for i := minLen; i <= len(word) && i <= maxLen; i++ {
 		for j := 0; j <= len(word)-i; j++ {
 			tokens[word[j:j+i]] = true
 		}
@@ -25,7 +28,13 @@ func word2token(word string) map[string]bool {
 }
 
 func New() Index {
+	return NewMinMax(3, 30)
+}
+
+func NewMinMax(min, max int) Index {
 	var idx Index
+	idx.minLen = min
+	idx.maxLen = max
 	idx.db = make(map[int]string)
 	idx.index = make(map[string]map[int]bool)
 	return idx
@@ -40,7 +49,7 @@ func (idx Index) Add(id string, searchText string) {
 	searchText = space.ReplaceAllString(searchText, " ")
 	words := strings.Split(searchText, " ")
 	for _, w := range words {
-		tokens := word2token(w)
+		tokens := word2token(w, idx.minLen, idx.maxLen)
 		for t := range tokens {
 			if idx.index[t] == nil {
 				idx.index[t] = make(map[int]bool)
@@ -60,11 +69,15 @@ func (idx Index) Search(searchText string) []string {
 
 	wordCount := 0
 	for _, w := range words {
-		if len(w) < minLen {
+		if len(w) < idx.minLen {
 			continue
 		}
 		wordCount++
 		w = strings.ToLower(w)
+
+		if len(w) > idx.maxLen {
+			w = w[:idx.maxLen]
+		}
 
 		for id := range idx.index[w] {
 			if _, exist := result[id]; exist {
