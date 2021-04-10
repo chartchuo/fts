@@ -14,7 +14,7 @@ Very simple and easy full text search library.
 	index.Add("string#5", "aaabbbbb")
 	index.Add("string#6", "0123456789012345678901234567890123456789")
 	index.Add("thai#1", "สวัสดีปีใหม่")
-    index.Add("thai#2", "สวัสดี")
+	index.Add("thai#2", "สวัสดี")
     
     result := index.Search("aaa")
 	log.Printf("found %d %s\n", len(result), txt)
