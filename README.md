@@ -1,7 +1,7 @@
 # FTS
 Very simple and easy full text search library. 
 - In-memory key value mapping.
-- Sutable for small number of data (<10000 entrys)
+- Sutable for small number of data (<10000 entries)
 - Support non-english example Thai
   
 ## Example
