@@ -16,7 +16,7 @@ Very simple and easy full text search library.
 	index.Add("thai#1", "สวัสดีปีใหม่")
 	index.Add("thai#2", "สวัสดี")
     
-    result := index.Search("aaa")
+	result := index.Search("aaa")
 	log.Printf("found %d %s\n", len(result), txt)
 	for _, r := range result {
 		log.Println(r)
